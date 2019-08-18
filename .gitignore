@@ -94,4 +94,4 @@ ENV/
 .ropeproject
 
 *.sqlite3
-.vagrant
+.vagrant 

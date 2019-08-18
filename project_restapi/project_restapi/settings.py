@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL='profiles_api.userprofile' #remember the syntax
 # Application definition
 
 INSTALLED_APPS = [
