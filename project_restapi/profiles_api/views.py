@@ -2,8 +2,11 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import api_serializer
+from .serializers import api_serializer,userprofile_serializer
 from rest_framework import viewsets
+from .models import userprofile
+from rest_framework.authentication import TokenAuthentication
+from .permissions import update_own_profile
 
 # Create your views here.
 class my_api(APIView):
@@ -87,3 +90,11 @@ class api_viewsets(viewsets.ViewSet):
 
     def destroy(self,request,pk=None):
         return Response({'http method':'delete'})
+
+
+class userprofile_viewset(viewsets.ModelViewSet):
+    """model view is for the managing the database and connecting api to the serializers ."""
+    serializer_class = userprofile_serializer
+    queryset=userprofile.objects.all()
+    authentication_classes=(TokenAuthentication,)
+    permission_classes=(update_own_profile,)
