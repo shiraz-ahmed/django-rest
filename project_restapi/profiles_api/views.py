@@ -7,6 +7,14 @@ from rest_framework import viewsets
 from .models import userprofile
 from rest_framework.authentication import TokenAuthentication
 from .permissions import update_own_profile
+from rest_framework import filters
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+
+
+
+
+
 
 # Create your views here.
 class my_api(APIView):
@@ -98,3 +106,13 @@ class userprofile_viewset(viewsets.ModelViewSet):
     queryset=userprofile.objects.all()
     authentication_classes=(TokenAuthentication,)
     permission_classes=(update_own_profile,)
+    # making a search ,dont forget to put the comma after the permissions_classes varialbes  b/c it must be considered as tuple not a single object
+    filter_backends=(filters.SearchFilter,) #dont forget to put comma
+    search_fields=('name','email',)
+
+
+
+class user_login_apiview(ObtainAuthToken):
+
+    """an api for user login"""
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES

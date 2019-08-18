@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import my_api,api_viewsets,userprofile_viewset
+from .views import my_api,api_viewsets,userprofile_viewset,user_login_apiview
 from rest_framework.routers  import DefaultRouter
 
 router=DefaultRouter()
@@ -11,6 +11,7 @@ router.register('userprofile_apiview',userprofile_viewset)
 urlpatterns = [
 
     path('view', my_api.as_view(),name='api'),
+    path('login/', user_login_apiview.as_view(),name='login'),
     path('', include(router.urls)),
 
 ]
