@@ -2,14 +2,16 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import api_serializer,userprofile_serializer
+from .serializers import api_serializer,userprofile_serializer,profilefeed_item_serializer
 from rest_framework import viewsets
-from .models import userprofile
+from .models import userprofile,profilefeed_item
 from rest_framework.authentication import TokenAuthentication
-from .permissions import update_own_profile
+from .permissions import update_own_profile,update_own_status
 from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
+
 
 
 
@@ -116,3 +118,14 @@ class user_login_apiview(ObtainAuthToken):
 
     """an api for user login"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+class userprofile_feed_viewset(viewsets.ModelViewSet):
+    """create update,delete for profilefeed_item."""
+    authentication_classes=(TokenAuthentication,)
+    serializer_class=profilefeed_item_serializer
+    queryset=profilefeed_item.objects.all()
+    permission_classes=(update_own_status,IsAuthenticated)
+    # IsAuthenticatedOrReadOnly is used when we are not authenitcated but still we can read the content,is uathemticated mwan we read when we are loged in
+    def perform_create(self,serializer): #when the user is authenitcated it gets added to the database
+        serializer.save(user_profile=self.request.user)

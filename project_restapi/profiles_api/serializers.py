@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import userprofile
+from .models import userprofile,profilefeed_item
 
 class api_serializer(serializers.Serializer):
     """ serializer is just like a form for the rest_api ,serialize the data and can validate  """
@@ -30,3 +30,13 @@ class userprofile_serializer(serializers.ModelSerializer):
 
         )
         return user
+
+
+class profilefeed_item_serializer(serializers.ModelSerializer):
+    """assigning the whole model to the profilefeed_item_serializer"""
+    class Meta:
+        model =profilefeed_item
+        fields=('id','user_profile','status_text','created_on')
+        extra_kwargs={
+        'user_profile':{'read_only':True}
+        }

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import userprofile
+from .models import userprofile,profilefeed_item
 # Register your models here.
 
 
@@ -11,3 +11,9 @@ class useradmin(admin.ModelAdmin):
 
 
 admin.site.register(userprofile,useradmin)
+
+
+
+
+
+admin.site.register(profilefeed_item)

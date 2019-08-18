@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser , PermissionsMixin,BaseUserManager
+from django.conf import settings
 # Create your models here.
 #by default django has a self created user model that we use as a superuser but here we will make a custom made usermodel
 
@@ -15,7 +16,7 @@ class userprofile_manager(BaseUserManager):
         return user
 
     def create_superuser(self,name,email,password):
-        user=self.create_user(name,email,password) #remember the sequence of the pass variables 
+        user=self.create_user(name,email,password) #remember the sequence of the pass variables
         user.is_superuser=True
         user.is_staff=True
         user.save(using=self._db) #using=self._db is the best method to write otherwise we can also write user.save() just
@@ -42,3 +43,13 @@ class userprofile(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+user=settings.AUTH_USER_MODEL
+class profilefeed_item(models.Model):
+    user_profile=models.ForeignKey(user,on_delete=models.CASCADE)
+    status_text=models.CharField(max_length=255)
+    created_on=models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.status_text
